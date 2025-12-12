@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial; }
+
+        body {
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container { width: 100%; max-width: 400px; }
+
+        .signup-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .signup-box h2 { text-align: center; margin-bottom: 20px; }
+
+        .input-group { margin-bottom: 15px; }
+
+        .input-group label { display: block; margin-bottom: 5px; }
+
+        .input-group input {
+            width: 100%; padding: 10px; 
+            border: 1px solid #ccc; border-radius: 6px;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%; padding: 12px;
+            background: #00ff4c; color: white; 
+            border: none; border-radius: 6px;
+            cursor: pointer; font-size: 16px;
+        }
+
+        button:hover { background: #00cc3d; }
+
+        .login-link { text-align: center; margin-top: 15px; }
+        .login-link a { color: #0003cc; text-decoration: none; }
+    </style>
+
+</head>
+
+<body> 
+    <div class="signup-box">
+        <form id="signupForm">
+
+            <h2>Create Account</h2>
+
+            <div class="input-group">
+                <input type="text" id="fullname" placeholder="Full Name" required />
+                <p class="error" id="fullError"></p>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Username" required />
+                <p class="error" id="userError"></p>
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email Address" required />
+                <p class="error" id="emailError"></p>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required />
+                <p class="error" id="passError"></p>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+                <p class="error" id="confirmError"></p>
+            </div>
+
+            <button id="signupBtn">Sign Up</button>
+
+            <p class="login-link">
+                Already have an account? <a href="login.html">Login</a>
+            </p>
+
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            let username = document.getElementById("username").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+
+            let userError = document.getElementById("userError");
+            let emailError = document.getElementById("emailError");
+            let passError = document.getElementById("passError");
+
+            userError.textContent = "";
+            emailError.textContent = "";
+            passError.textContent = "";
+
+            let isValid = true;
+            console.log(username, email, password);
+
+            // Username validation
+            if (username.length < 3) {
+                userError.textContent = "Username must be at least 3 characters.";
+                isValid = false;
+            }
+
+            // Email validation
+            let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!email.match(emailPattern)) {
+                emailError.textContent = "Enter a valid email.";
+                isValid = false;
+            }
+
+            // Strong password validation
+            let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+
+            if (!password.match(passwordPattern)) {
+                passError.innerHTML = 
+                    "Password must contain:<br>" +
+                    "- At least 6 characters<br>" +
+                    "- Uppercase letter (A-Z)<br>" +
+                    "- Lowercase letter (a-z)<br>" +
+                    "- Number (0-9)<br>" +
+                    "- Special character (!@#$%^&*)";
+                isValid = false;
+            }
+
+            if (isValid) { 
+              let userData = {
+                  username: username,
+                  email: email,
+                  password: password 
+              };
+              localStorage.setItem("userData", JSON.stringify(userData)); 
+                alert("Signup successfull");
+            }
+        });
+    </script>
+</body> 
+</html>
+ 
